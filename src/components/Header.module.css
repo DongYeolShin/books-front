@@ -1,0 +1,22 @@
+.header {
+  border-bottom: 1px solid #e5e7eb;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.logoText {
+  letter-spacing: -0.02em;
+}
+
+.navLink {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: #2563eb;
+}
+
+.activeLink {
+  color: #2563eb;
+  font-weight: 600;
+}

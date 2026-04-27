@@ -1,0 +1,74 @@
+.page {
+  background: linear-gradient(135deg, #faf5ff 0%, #fefce8 100%);
+}
+
+.card {
+  border: 1px solid #f3e8ff;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: #1f2937;
+  background-color: #faf5ff;
+  border: 1px solid #e9d5ff;
+  border-radius: 10px;
+  transition: border-color 0.2s ease, background-color 0.2s ease,
+    box-shadow 0.2s ease;
+  outline: none;
+}
+
+.input::placeholder {
+  color: #c4b5fd;
+}
+
+.input:focus {
+  background-color: #ffffff;
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+
+.loginButton {
+  flex: 1;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #9333ea;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.05s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.25);
+}
+
+.loginButton:hover {
+  background-color: #7e22ce;
+}
+
+.loginButton:active {
+  transform: translateY(1px);
+}
+
+.signupButton {
+  flex: 1;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #854d0e;
+  background-color: #fef9c3;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.05s ease;
+}
+
+.signupButton:hover {
+  background-color: #fef08a;
+}
+
+.signupButton:active {
+  transform: translateY(1px);
+}
