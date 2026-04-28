@@ -1,6 +1,7 @@
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { BookOpen } from 'lucide-react'
 import styles from './Header.module.css'
+import useAuthStore, { selectIsAuthenticated } from '../stores/authStore'
 
 const menus = [
   { to: '/', label: 'Home', end: true },
@@ -12,6 +13,16 @@ const menus = [
 ]
 
 function Header() {
+  const navigate = useNavigate()
+  const isAuthenticated = useAuthStore(selectIsAuthenticated)
+  const name = useAuthStore((state) => state.name)
+  const clearAuth = useAuthStore((state) => state.clearAuth)
+
+  const handleLogout = () => {
+    clearAuth()
+    navigate('/')
+  }
+
   return (
     <header className={`${styles.header} bg-white sticky top-0 z-10`}>
       <div className="h-16 px-10 flex items-center justify-between">
@@ -39,12 +50,27 @@ function Header() {
             ))}
           </nav>
         </div>
-        <Link
-          to="/login"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-lg px-6 py-2.5 transition-colors"
-        >
-          로그인
-        </Link>
+        {isAuthenticated ? (
+          <div className="flex items-center gap-4">
+            <span className="text-[15px] text-gray-700">
+              <span className="font-semibold">{name}</span>님
+            </span>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-800 text-[15px] font-semibold rounded-lg px-6 py-2.5 transition-colors"
+            >
+              로그아웃
+            </button>
+          </div>
+        ) : (
+          <Link
+            to="/login"
+            className="bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-lg px-6 py-2.5 transition-colors"
+          >
+            로그인
+          </Link>
+        )}
       </div>
     </header>
   )

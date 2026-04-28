@@ -2,20 +2,38 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BookOpen } from 'lucide-react'
 import styles from './LoginPage.module.css'
+import { login as loginApi } from '../services/authService'
+import useAuthStore from '../stores/authStore'
 
 function LoginPage() {
   const navigate = useNavigate()
-  const [form, setForm] = useState({ username: '', password: '' })
+  const setAuth = useAuthStore((state) => state.setAuth)
+  const [form, setForm] = useState({ userId: '', passwd: '' })
+  const [submitting, setSubmitting] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // TODO: 실제 로그인 API 연동
-    console.log('login submit', form)
+    if (submitting) return
+    setSubmitting(true)
+    try {
+      const data = await loginApi({ userId: form.userId, passwd: form.passwd })
+      setAuth(data)
+      navigate('/')
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        error?.message ||
+        '로그인에 실패했습니다.'
+      alert(`로그인 실패: ${message}`)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handleSignup = () => {
@@ -32,14 +50,14 @@ function LoginPage() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="username" className="text-sm font-medium text-gray-700">
+            <label htmlFor="userId" className="text-sm font-medium text-gray-700">
               아이디
             </label>
             <input
-              id="username"
-              name="username"
+              id="userId"
+              name="userId"
               type="text"
-              value={form.username}
+              value={form.userId}
               onChange={handleChange}
               placeholder="아이디를 입력하세요"
               autoComplete="username"
@@ -49,14 +67,14 @@ function LoginPage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="password" className="text-sm font-medium text-gray-700">
+            <label htmlFor="passwd" className="text-sm font-medium text-gray-700">
               비밀번호
             </label>
             <input
-              id="password"
-              name="password"
+              id="passwd"
+              name="passwd"
               type="password"
-              value={form.password}
+              value={form.passwd}
               onChange={handleChange}
               placeholder="비밀번호를 입력하세요"
               autoComplete="current-password"
@@ -66,13 +84,18 @@ function LoginPage() {
           </div>
 
           <div className="flex flex-row gap-3 mt-4">
-            <button type="submit" className={styles.loginButton}>
-              로그인
+            <button
+              type="submit"
+              className={styles.loginButton}
+              disabled={submitting}
+            >
+              {submitting ? '로그인 중...' : '로그인'}
             </button>
             <button
               type="button"
               onClick={handleSignup}
               className={styles.signupButton}
+              disabled={submitting}
             >
               회원가입
             </button>
