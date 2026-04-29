@@ -6,7 +6,10 @@
       "Bash(git -C \"K:/sources/book_project/books-front\" status)",
       "Bash(git config *)",
       "Bash(gh auth *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(npm run *)",
+      "mcp__ide__getDiagnostics",
+      "Bash(curl *)"
     ]
   }
 }
