@@ -6,8 +6,8 @@ export const fetchBooks = async () => {
   return data
 }
 
-export const fetchBookById = async (id) => {
-  const { data } = await axiosInstance.get(`${ENDPOINTS.BOOKS}/${id}`)
+export const fetchBookById = async (bookId) => {
+  const { data } = await axiosInstance.get(ENDPOINTS.BOOK_DETAIL(bookId))
   return data
 }
 

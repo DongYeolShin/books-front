@@ -5,7 +5,7 @@ import BookSection from '../components/BookSection'
 const SECTIONS = [
   { key: 'bestTopN', title: '베스트셀러 Top 5', category: 'bestSeller', moreVariant: 'plain' },
   { key: 'newTopN', title: '새로나온책 Top 5', category: 'new', moreVariant: 'plain' },
-  { key: 'basicTopN', title: '기본서 Top 5', category: 'Basic', moreVariant: 'outlined' },
+  { key: 'basicTopN', title: '기본서 Top 5', category: 'basic', moreVariant: 'outlined' },
 ]
 
 const EMPTY_TOPS = { bestTopN: [], newTopN: [], basicTopN: [] }
