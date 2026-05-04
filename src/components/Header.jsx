@@ -5,11 +5,11 @@ import useAuthStore, { selectIsAuthenticated } from '../stores/authStore'
 
 const menus = [
   { to: '/', label: 'Home', end: true },
-  { to: '/books?category=bestseller', label: '베스트 셀러' },
-  { to: '/books?category=new', label: '새로운책' },
-  { to: '/books?category=basic', label: '기본서' },
-  { to: '/books?category=mobile', label: '모바일' },
-  { to: '/books?category=web', label: '웹프로그래밍' },
+  { to: '/books/bestseller', label: '베스트 셀러' },
+  { to: '/books/new', label: '새로운책' },
+  { to: '/books/basic', label: '기본서' },
+  { to: '/books/mobile', label: '모바일' },
+  { to: '/books/web', label: '웹프로그래밍' },
 ]
 
 function Header() {

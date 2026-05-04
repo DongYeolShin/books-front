@@ -15,7 +15,7 @@ function BookCard({ book, index = 0 }) {
 
   return (
     <Link
-      to={`/books/${book.bookId}`}
+      to={`/book/${book.bookId}`}
       className="flex-1 min-w-0 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col"
     >
       <div

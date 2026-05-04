@@ -1,7 +1,7 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import Layout from '../pages/Layout'
 import MainPage from '../pages/MainPage'
-import BooksPage from '../pages/BooksPage'
+import BookListPage from '../pages/BookListPage'
 import BookDetailPage from '../pages/BookDetailPage'
 import CartPage from '../pages/CartPage'
 import LoginPage from '../pages/LoginPage'
@@ -18,8 +18,9 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <MainPage /> },
-      { path: 'books', element: <BooksPage /> },
-      { path: 'books/:bookId', element: <BookDetailPage /> },
+      { path: 'books', element: <Navigate to="/books/bestseller" replace /> },
+      { path: 'books/:category', element: <BookListPage /> },
+      { path: 'book/:bookId', element: <BookDetailPage /> },
       { path: 'cart', element: <CartPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],

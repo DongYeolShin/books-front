@@ -12,7 +12,7 @@ function BookSection({ title, category, moreVariant = 'plain', books = [] }) {
     <section className="flex flex-col gap-6">
       <header className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
-        <Link to={`/books?category=${category}`} className={moreClass}>
+        <Link to={`/books/${category}`} className={moreClass}>
           <span>더보기</span>
           <ChevronRight size={16} />
         </Link>

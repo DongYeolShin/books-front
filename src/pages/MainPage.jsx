@@ -3,7 +3,7 @@ import { fetchTopBooks } from '../services/bookService'
 import BookSection from '../components/BookSection'
 
 const SECTIONS = [
-  { key: 'bestTopN', title: '베스트셀러 Top 5', category: 'bestSeller', moreVariant: 'plain' },
+  { key: 'bestTopN', title: '베스트셀러 Top 5', category: 'bestseller', moreVariant: 'plain' },
   { key: 'newTopN', title: '새로나온책 Top 5', category: 'new', moreVariant: 'plain' },
   { key: 'basicTopN', title: '기본서 Top 5', category: 'basic', moreVariant: 'outlined' },
 ]
