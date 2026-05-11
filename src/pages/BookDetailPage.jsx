@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
   BookOpen,
   ChevronDown,
@@ -29,6 +29,7 @@ const formatDate = (value) => {
 
 function BookDetailPage() {
   const { bookId } = useParams()
+  const navigate = useNavigate()
   const [book, setBook] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -153,6 +154,11 @@ function BookDetailPage() {
               </button>
               <button
                 type="button"
+                onClick={() =>
+                  navigate('/order', {
+                    state: { books: [{ bookId: book.bookId, quantity: 1 }] },
+                  })
+                }
                 className="w-[90px] h-14 rounded-lg bg-blue-900 flex items-center justify-center text-white text-sm font-bold hover:bg-blue-950 transition-colors"
               >
                 바로구매

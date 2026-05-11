@@ -4,8 +4,10 @@ import MainPage from '../pages/MainPage'
 import BookListPage from '../pages/BookListPage'
 import BookDetailPage from '../pages/BookDetailPage'
 import CartPage from '../pages/CartPage'
+import OrderPage from '../pages/OrderPage'
 import LoginPage from '../pages/LoginPage'
 import NotFoundPage from '../pages/NotFoundPage'
+import RequireAuth from './RequireAuth'
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,14 @@ const router = createBrowserRouter([
       { path: 'books/:category', element: <BookListPage /> },
       { path: 'book/:bookId', element: <BookDetailPage /> },
       { path: 'cart', element: <CartPage /> },
+      {
+        path: 'order',
+        element: (
+          <RequireAuth>
+            <OrderPage />
+          </RequireAuth>
+        ),
+      },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

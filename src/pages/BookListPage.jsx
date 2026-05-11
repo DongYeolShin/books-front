@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
   BookOpen,
   ChevronDown,
@@ -43,6 +43,7 @@ const formatDate = (value) => {
 
 function BookListPage() {
   const { category } = useParams()
+  const navigate = useNavigate()
   const title = CATEGORY_TITLES[category]
 
   const [page, setPage] = useState(1)
@@ -280,6 +281,13 @@ function BookListPage() {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <button
                       type="button"
+                      onClick={() =>
+                        navigate('/order', {
+                          state: {
+                            books: [{ bookId: book.bookId, quantity: 1 }],
+                          },
+                        })
+                      }
                       className="px-5 py-2 rounded-md bg-[#2563EB] text-white text-[13px] font-medium hover:bg-blue-700 transition-colors"
                     >
                       주문하기

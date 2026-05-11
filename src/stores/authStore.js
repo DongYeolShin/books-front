@@ -8,6 +8,7 @@ const initialState = {
   expiresIn: 0,
   userId: '',
   name: '',
+  points: 0,
 }
 
 const useAuthStore = create(
@@ -21,6 +22,11 @@ const useAuthStore = create(
           state.expiresIn = payload.expiresIn ?? 0
           state.userId = payload.userId ?? ''
           state.name = payload.name ?? ''
+          state.points = payload.points ?? 0
+        }),
+      setPoints: (points) =>
+        set((state) => {
+          state.points = points ?? 0
         }),
       clearAuth: () =>
         set((state) => {
@@ -29,6 +35,7 @@ const useAuthStore = create(
           state.expiresIn = initialState.expiresIn
           state.userId = initialState.userId
           state.name = initialState.name
+          state.points = initialState.points
         }),
     })),
     {

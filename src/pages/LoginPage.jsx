@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { BookOpen } from 'lucide-react'
 import styles from './LoginPage.module.css'
 import { login as loginApi } from '../services/authService'
@@ -7,6 +7,8 @@ import useAuthStore from '../stores/authStore'
 
 function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from
   const setAuth = useAuthStore((state) => state.setAuth)
   const [form, setForm] = useState({ userId: '', passwd: '' })
   const [submitting, setSubmitting] = useState(false)
@@ -23,7 +25,14 @@ function LoginPage() {
     try {
       const data = await loginApi({ userId: form.userId, passwd: form.passwd })
       setAuth(data)
-      navigate('/')
+      if (from?.pathname) {
+        navigate(
+          { pathname: from.pathname, search: from.search ?? '' },
+          { replace: true, state: from.state },
+        )
+      } else {
+        navigate('/', { replace: true })
+      }
     } catch (error) {
       const message =
         error?.response?.data?.message ||
