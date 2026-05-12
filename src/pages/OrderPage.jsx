@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { BookOpen, Trash2 } from 'lucide-react'
 import { fetchOrderBooks } from '../services/orderService'
+import { createOrder, completePayment } from '../services/paymentService'
+import { requestPortOnePayment } from '../utils/portone'
 import useAuthStore from '../stores/authStore'
 
 const DAUM_POSTCODE_SRC =
@@ -60,6 +62,7 @@ function OrderPage() {
   const [detailAddress, setDetailAddress] = useState('')
   const [pointInput, setPointInput] = useState('')
   const [pointOverWarn, setPointOverWarn] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -170,12 +173,62 @@ function OrderPage() {
     })
   }
 
-  const handlePay = () => {
+  const handlePay = async () => {
     if (!recipient.trim()) return alert('수령인을 입력하세요.')
     if (!phone.trim()) return alert('연락처를 입력하세요.')
     if (!zipcode || !address) return alert('주소를 검색해 입력하세요.')
     if (!detailAddress.trim()) return alert('상세 주소를 입력하세요.')
-    alert(`결제금액 ${formatPrice(finalPrice)}원으로 결제를 진행합니다.`)
+    if (isProcessing) return
+    setIsProcessing(true)
+    try {
+      const orderRes = await createOrder({
+        receiver: recipient,
+        phone,
+        shippingAddress: `[${zipcode}] ${address}`,
+        shippingDetailAddress: detailAddress,
+        usedPoints,
+        items: orderBooks.map((b) => ({
+          bookId: b.bookId,
+          quantity: b.quantity,
+          priceAtPurchase: b.salePrice ?? b.originalPrice,
+        })),
+      })
+      const { orderId, totalAmount, orderName } = orderRes.data ?? orderRes
+
+      const payResult = await requestPortOnePayment({
+        orderId,
+        orderName,
+        totalAmount,
+        payMethod: 'CARD',
+        customer: { fullName: recipient, phoneNumber: phone },
+      })
+      if (!payResult.success) {
+        navigate(
+          `/payment/fail?orderId=${orderId}&message=${encodeURIComponent(payResult.message ?? '결제가 취소되었습니다.')}`,
+        )
+        return
+      }
+
+      const completeRes = await completePayment({
+        paymentId: payResult.paymentId,
+        orderId,
+      })
+      const { status, message } = completeRes.data ?? completeRes
+      if (status === 'PAID') {
+        navigate(`/payment/success?orderId=${orderId}`)
+      } else if (status === 'VIRTUAL_ACCOUNT_ISSUED') {
+        navigate(`/payment/success?orderId=${orderId}&virtualAccount=true`)
+      } else {
+        navigate(
+          `/payment/fail?orderId=${orderId}&message=${encodeURIComponent(message ?? '결제에 실패했습니다.')}`,
+        )
+      }
+    } catch (e) {
+      console.error(e)
+      alert(e?.response?.data?.message ?? '결제 처리 중 오류가 발생했습니다.')
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   return (
@@ -448,9 +501,10 @@ function OrderPage() {
               <button
                 type="button"
                 onClick={handlePay}
-                className="h-14 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-[17px] font-bold transition-colors"
+                disabled={isProcessing}
+                className="h-14 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-[17px] font-bold transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                결제하기
+                {isProcessing ? '결제 진행 중...' : '결제하기'}
               </button>
             </aside>
           </div>

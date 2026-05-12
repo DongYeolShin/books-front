@@ -7,12 +7,22 @@ import CartPage from '../pages/CartPage'
 import OrderPage from '../pages/OrderPage'
 import LoginPage from '../pages/LoginPage'
 import NotFoundPage from '../pages/NotFoundPage'
+import PaymentSuccessPage from '../pages/PaymentSuccessPage'
+import PaymentFailPage from '../pages/PaymentFailPage'
 import RequireAuth from './RequireAuth'
 
 const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/payment/success',
+    element: <PaymentSuccessPage />,
+  },
+  {
+    path: '/payment/fail',
+    element: <PaymentFailPage />,
   },
   {
     path: '/',
@@ -23,7 +33,14 @@ const router = createBrowserRouter([
       { path: 'books', element: <Navigate to="/books/bestseller" replace /> },
       { path: 'books/:category', element: <BookListPage /> },
       { path: 'book/:bookId', element: <BookDetailPage /> },
-      { path: 'cart', element: <CartPage /> },
+      {
+        path: 'cart',
+        element: (
+          <RequireAuth>
+            <CartPage />
+          </RequireAuth>
+        ),
+      },
       {
         path: 'order',
         element: (

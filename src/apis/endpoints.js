@@ -4,4 +4,8 @@ export const ENDPOINTS = {
   BOOK_DETAIL: (bookId) => `/books/${bookId}`,
   USERS: '/users',
   LOGIN: '/login',
+  CARTS: '/carts',
+  CART_DETAIL: (bookId) => `/carts/${bookId}`,
+  ORDERS: '/orders',
+  PAYMENTS_COMPLETE: '/payments/complete',
 }
