@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CheckCircle2 } from 'lucide-react'
 
@@ -6,6 +7,11 @@ function PaymentSuccessPage() {
   const [searchParams] = useSearchParams()
   const orderId = searchParams.get('orderId') ?? ''
   const isVirtualAccount = searchParams.get('virtualAccount') === 'true'
+
+  useEffect(() => {
+    if (!orderId || isVirtualAccount) return
+    navigate(`/order/complete?orderId=${orderId}`, { replace: true })
+  }, [orderId, isVirtualAccount, navigate])
 
   return (
     <div className="min-h-screen bg-[#F5F5F8] flex items-center justify-center px-4 py-10">

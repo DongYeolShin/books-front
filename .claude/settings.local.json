@@ -10,7 +10,8 @@
       "Bash(npm run *)",
       "mcp__ide__getDiagnostics",
       "Bash(curl *)",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(Select-String -Pattern '\"lint\"')"
     ]
   }
 }

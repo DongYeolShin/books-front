@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import {
   BookOpen,
   ChevronDown,
@@ -9,6 +9,10 @@ import {
   ShoppingCart,
 } from 'lucide-react'
 import { fetchBooks } from '../services/bookService'
+import { addCart } from '../services/cartService'
+import useAuthStore, { selectIsAuthenticated } from '../stores/authStore'
+import usePendingCartStore from '../stores/pendingCartStore'
+import ConfirmModal from '../components/ConfirmModal'
 
 const CATEGORY_TITLES = {
   bestseller: '베스트 셀러',
@@ -44,6 +48,11 @@ const formatDate = (value) => {
 function BookListPage() {
   const { category } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
+  const isAuthenticated = useAuthStore(selectIsAuthenticated)
+  const pendingCart = usePendingCartStore((state) => state.pendingCart)
+  const setPendingCart = usePendingCartStore((state) => state.setPendingCart)
+  const clearPendingCart = usePendingCartStore((state) => state.clearPendingCart)
   const title = CATEGORY_TITLES[category]
 
   const [page, setPage] = useState(1)
@@ -56,6 +65,8 @@ function BookListPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [sizeOpen, setSizeOpen] = useState(false)
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
+  const [completeModalOpen, setCompleteModalOpen] = useState(false)
 
   if (prevCategory !== category) {
     setPrevCategory(category)
@@ -100,6 +111,40 @@ function BookListPage() {
       cancelled = true
     }
   }, [category, page, size, keyword, title])
+
+  const registerCart = async (payload) => {
+    try {
+      const result = await addCart(payload)
+      if (result?.code === 200) {
+        setCompleteModalOpen(true)
+      } else {
+        alert(result?.message || '장바구니 등록이 실패되었습니다.')
+      }
+    } catch (e) {
+      alert(e?.response?.data?.message || '장바구니 등록이 실패되었습니다.')
+    }
+  }
+
+  const handleAddToCart = (book) => {
+    const payload = { bookId: book.bookId, quantity: 1 }
+    if (!isAuthenticated) {
+      setPendingCart({
+        ...payload,
+        from: { pathname: location.pathname, search: location.search },
+      })
+      setLoginModalOpen(true)
+      return
+    }
+    registerCart(payload)
+  }
+
+  useEffect(() => {
+    if (!isAuthenticated || !pendingCart) return
+    if (pendingCart.from?.pathname !== location.pathname) return
+    const payload = { bookId: pendingCart.bookId, quantity: pendingCart.quantity }
+    clearPendingCart()
+    registerCart(payload)
+  }, [isAuthenticated, pendingCart, location.pathname, clearPendingCart])
 
   const totalRows = pageInfo?.totalRows ?? 0
   const totalPages = Math.max(1, Math.ceil(totalRows / size))
@@ -294,6 +339,7 @@ function BookListPage() {
                     </button>
                     <button
                       type="button"
+                      onClick={() => handleAddToCart(book)}
                       className="px-5 py-2 rounded-md border border-[#D1D5DB] bg-white text-[#374151] text-[13px] font-medium flex items-center gap-1.5 hover:bg-gray-50 transition-colors"
                     >
                       <ShoppingCart size={14} strokeWidth={2} />
@@ -347,6 +393,40 @@ function BookListPage() {
           </div>
         </section>
       )}
+
+      <ConfirmModal
+        open={loginModalOpen}
+        message={'해당기능은 로그인이 필요합니다.\n로그인하시겠습니까?'}
+        confirmText="예"
+        cancelText="아니오"
+        onConfirm={() => {
+          setLoginModalOpen(false)
+          navigate('/login', {
+            state: {
+              from: {
+                pathname: location.pathname,
+                search: location.search,
+              },
+            },
+          })
+        }}
+        onCancel={() => {
+          setLoginModalOpen(false)
+          clearPendingCart()
+        }}
+      />
+
+      <ConfirmModal
+        open={completeModalOpen}
+        message={'장바구니에 등록되었습니다.\n장바구니로 이동하시겠습니까?'}
+        confirmText="이동"
+        cancelText="쇼핑계속하기"
+        onConfirm={() => {
+          setCompleteModalOpen(false)
+          navigate('/cart')
+        }}
+        onCancel={() => setCompleteModalOpen(false)}
+      />
     </div>
   )
 }

@@ -13,3 +13,20 @@ export const completePayment = async ({ paymentId, orderId }) => {
   })
   return data
 }
+
+export const fetchPaymentComplete = async (orderId) => {
+  try {
+    const { data } = await axiosInstance.get(ENDPOINTS.PAYMENTS_COMPLETE, {
+      params: { orderId },
+    })
+    return data
+  } catch (e) {
+    const res = await fetch('/mocks/payment-complete.json')
+    if (!res.ok) throw e
+    const mock = await res.json()
+    if (orderId && mock?.data) {
+      mock.data.orderId = orderId
+    }
+    return mock
+  }
+}
