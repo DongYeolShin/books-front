@@ -1,0 +1,44 @@
+{
+  "code": 200,
+  "data": {
+    "orderId": "20250227-3948201",
+    "orderList": [
+      {
+        "bookId": 1,
+        "title": "어둠 속의 빛",
+        "author": "김민준",
+        "publisher": "문학과지성사",
+        "originalPrice": 20000,
+        "salePrice": 18000,
+        "quantity": 1,
+        "imageUrl": ""
+      },
+      {
+        "bookId": 2,
+        "title": "바람이 머무는 곳",
+        "author": "서지원",
+        "publisher": "민음사",
+        "originalPrice": 18000,
+        "salePrice": 15000,
+        "quantity": 2,
+        "imageUrl": ""
+      }
+    ],
+    "usedPoints": 0,
+    "orders": {
+      "name": "신동열",
+      "phone": "010-4096-7353",
+      "email": "dongnyeol@email.com",
+      "paymethod": "이니시스",
+      "orderDate": "2025-02-27"
+    },
+    "shipping": {
+      "name": "신동열",
+      "phone": "010-4096-7353",
+      "address": "[13642] 경기도 성남시 수정구 위례중앙로 190",
+      "addressDetail": "(창곡동, 위례자이더시티) 5017동 1103호",
+      "request": "문 앞에 놔주세요",
+      "status": "배송중"
+    }
+  }
+}

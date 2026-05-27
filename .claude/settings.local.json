@@ -11,7 +11,9 @@
       "mcp__ide__getDiagnostics",
       "Bash(curl *)",
       "Bash(npx eslint *)",
-      "Bash(Select-String -Pattern '\"lint\"')"
+      "Bash(Select-String -Pattern '\"lint\"')",
+      "Bash(node *)",
+      "Bash(npx playwright *)"
     ]
   }
 }

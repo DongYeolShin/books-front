@@ -1,0 +1,19 @@
+{
+  "code": 200,
+  "data": {
+    "profile": {
+      "name": "김민준",
+      "birthDate": "1990. 05. 14",
+      "gender": "남성",
+      "phone": "010-1234-5678",
+      "email": "minjun.kim@example.com",
+      "address": "서울특별시 강남구 테헤란로 123",
+      "addressDetail": "101동 502호"
+    },
+    "recentOrders": [
+      { "date": "2024.05.21", "title": "미드나잇 라이브러리", "author": "매트 헤이그 저", "price": "15,800원" },
+      { "date": "2024.05.08", "title": "아몬드", "author": "손원평 저", "price": "12,600원" },
+      { "date": "2024.04.30", "title": "채식주의자", "author": "한강 저", "price": "10,800원" }
+    ]
+  }
+}

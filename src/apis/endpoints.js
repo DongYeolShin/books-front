@@ -8,4 +8,5 @@ export const ENDPOINTS = {
   CART_DETAIL: (bookId) => `/carts/${bookId}`,
   ORDERS: '/orders',
   PAYMENTS_COMPLETE: '/payments/complete',
+  USER_PROFILE: (userId) => `/users/${userId}/profile`,
 }

@@ -1,5 +1,6 @@
+import { useState, useRef, useEffect } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, ChevronDown } from 'lucide-react'
 import styles from './Header.module.css'
 import useAuthStore, { selectIsAuthenticated } from '../stores/authStore'
 
@@ -17,11 +18,39 @@ function Header() {
   const isAuthenticated = useAuthStore(selectIsAuthenticated)
   const name = useAuthStore((state) => state.name)
   const clearAuth = useAuthStore((state) => state.clearAuth)
+  const [isOpen, setIsOpen] = useState(false)
+  const wrapperRef = useRef(null)
 
   const handleLogout = () => {
     clearAuth()
+    setIsOpen(false)
     navigate('/')
   }
+
+  useEffect(() => {
+    const handleMouseDown = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleMouseDown)
+    return () => {
+      document.removeEventListener('mousedown', handleMouseDown)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen) return
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen])
 
   return (
     <header className={`${styles.header} bg-white sticky top-0 z-10`}>
@@ -51,17 +80,48 @@ function Header() {
           </nav>
         </div>
         {isAuthenticated ? (
-          <div className="flex items-center gap-4">
-            <span className="text-[15px] text-gray-700">
-              <span className="font-semibold">{name}</span>님
-            </span>
+          <div ref={wrapperRef} className={styles.dropdownWrapper}>
             <button
               type="button"
-              onClick={handleLogout}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-800 text-[15px] font-semibold rounded-lg px-6 py-2.5 transition-colors"
+              onClick={() => setIsOpen((prev) => !prev)}
+              aria-haspopup="true"
+              aria-expanded={isOpen}
+              className="flex items-center gap-1 text-[15px] font-semibold text-gray-700"
             >
-              로그아웃
+              {name}님
+              <ChevronDown
+                size={16}
+                className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+              />
             </button>
+            {isOpen && (
+              <div className={styles.dropdownMenu} role="menu">
+                <Link
+                  to="/cart"
+                  role="menuitem"
+                  className={styles.dropdownItem}
+                  onClick={() => setIsOpen(false)}
+                >
+                  장바구니
+                </Link>
+                <Link
+                  to="/mypage"
+                  role="menuitem"
+                  className={styles.dropdownItem}
+                  onClick={() => setIsOpen(false)}
+                >
+                  마이페이지
+                </Link>
+                <button
+                  type="button"
+                  role="menuitem"
+                  className={styles.dropdownItem}
+                  onClick={handleLogout}
+                >
+                  로그아웃
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <Link
