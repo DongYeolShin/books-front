@@ -1,19 +1,40 @@
 {
   "code": 200,
   "data": {
-    "profile": {
+    "myInfo": {
       "name": "김민준",
-      "birthDate": "1990. 05. 14",
-      "gender": "남성",
-      "phone": "010-1234-5678",
-      "email": "minjun.kim@example.com",
-      "address": "서울특별시 강남구 테헤란로 123",
-      "addressDetail": "101동 502호"
+      "birth": "1985.04.12",
+      "gender": "남자",
+      "phone": "010-2222-4444",
+      "email": "eveing2@naver.com",
+      "address": "서울시 은평구",
+      "addressDetail": "꿈마을아파트 101호"
     },
     "recentOrders": [
-      { "date": "2024.05.21", "title": "미드나잇 라이브러리", "author": "매트 헤이그 저", "price": "15,800원" },
-      { "date": "2024.05.08", "title": "아몬드", "author": "손원평 저", "price": "12,600원" },
-      { "date": "2024.04.30", "title": "채식주의자", "author": "한강 저", "price": "10,800원" }
+      {
+        "orderId": "11012-222",
+        "orderDate": "2025-03-22",
+        "title": "IT서적",
+        "author": "메리",
+        "amount": "34000",
+        "status": "배송중"
+      },
+      {
+        "orderId": "11012-223",
+        "orderDate": "2025-03-15",
+        "title": "미드나잇 라이브러리",
+        "author": "매트 헤이그",
+        "amount": "15800",
+        "status": "배송완료"
+      },
+      {
+        "orderId": "11012-224",
+        "orderDate": "2025-03-08",
+        "title": "아몬드",
+        "author": "손원평",
+        "amount": "12600",
+        "status": "배송완료"
+      }
     ]
   }
 }

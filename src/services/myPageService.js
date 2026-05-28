@@ -1,9 +1,9 @@
 import axiosInstance from '../apis/axiosInstance'
 import { ENDPOINTS } from '../apis/endpoints'
 
-export const fetchMyPageProfile = async (userId) => {
+export const fetchMyPageProfile = async () => {
   try {
-    const { data } = await axiosInstance.get(ENDPOINTS.USER_PROFILE(userId))
+    const { data } = await axiosInstance.get(ENDPOINTS.USER_ME)
     return data
   } catch (e) {
     const res = await fetch('/mocks/mypage-profile.json')

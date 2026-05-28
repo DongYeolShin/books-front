@@ -8,11 +8,10 @@ import { fetchMyPageProfile } from '../services/myPageService'
 function MyPage() {
   const navigate = useNavigate()
   const name = useAuthStore((state) => state.name)
-  const userId = useAuthStore((state) => state.userId)
   const clearAuth = useAuthStore((state) => state.clearAuth)
   const points = useAuthStore((state) => state.points)
 
-  const [profile, setProfile] = useState(null)
+  const [myInfo, setMyInfo] = useState(null)
   const [recentOrders, setRecentOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -23,9 +22,9 @@ function MyPage() {
       try {
         setLoading(true)
         setError(null)
-        const res = await fetchMyPageProfile(userId)
+        const res = await fetchMyPageProfile()
         if (cancelled) return
-        setProfile(res?.data?.profile ?? null)
+        setMyInfo(res?.data?.myInfo ?? null)
         setRecentOrders(res?.data?.recentOrders ?? [])
       } catch (e) {
         console.error(e)
@@ -38,7 +37,7 @@ function MyPage() {
     return () => {
       cancelled = true
     }
-  }, [userId])
+  }, [])
 
   const handleLogout = () => {
     clearAuth()
@@ -70,7 +69,7 @@ function MyPage() {
         name={name}
         onLogout={handleLogout}
       />
-      <MainContent profile={profile} recentOrders={recentOrders} points={points} />
+      <MainContent myInfo={myInfo} recentOrders={recentOrders} points={points} />
     </div>
   )
 }
@@ -142,7 +141,7 @@ function Sidebar({ avatarInitial, name, onLogout }) {
   )
 }
 
-function MainContent({ profile, recentOrders, points }) {
+function MainContent({ myInfo, recentOrders, points }) {
   return (
     <div className="flex-1 py-8 px-9 flex flex-col">
       <h1 className="text-[#111827] text-xl font-bold pb-5">내 정보</h1>
@@ -164,27 +163,27 @@ function MainContent({ profile, recentOrders, points }) {
         {/* Row: 이름 | 생년월일 */}
         <ProfileRow2Col
           label1="이름"
-          value1={profile?.name}
+          value1={myInfo?.name}
           label2="생년월일"
-          value2={profile?.birthDate}
+          value2={myInfo?.birth}
         />
 
         {/* Row: 성별 | 전화번호 */}
         <ProfileRow2Col
           label1="성별"
-          value1={profile?.gender}
+          value1={myInfo?.gender}
           label2="전화번호"
-          value2={profile?.phone}
+          value2={myInfo?.phone}
         />
 
         {/* Row: 이메일 */}
-        <ProfileRow1Col label="이메일" value={profile?.email} withBorder />
+        <ProfileRow1Col label="이메일" value={myInfo?.email} withBorder />
 
         {/* Row: 주소 */}
-        <ProfileRow1Col label="주소" value={profile?.address} withBorder />
+        <ProfileRow1Col label="주소" value={myInfo?.address} withBorder />
 
         {/* Row: 상세주소 */}
-        <ProfileRow1Col label="상세주소" value={profile?.addressDetail} withBorder={false} />
+        <ProfileRow1Col label="상세주소" value={myInfo?.addressDetail} withBorder={false} />
       </div>
 
       <div className="h-6" />
@@ -227,7 +226,7 @@ function MainContent({ profile, recentOrders, points }) {
         <div className="h-px bg-[#E5E7EB]" />
 
         {recentOrders.map((order, idx) => (
-          <div key={order.title + order.date}>
+          <div key={order.orderId ?? `${order.title}-${order.orderDate}-${idx}`}>
             {idx > 0 && <div className="h-px bg-[#F3F4F6]" />}
             <div className="flex items-center gap-4 px-6 py-4">
               {/* Thumbnail */}
@@ -238,15 +237,17 @@ function MainContent({ profile, recentOrders, points }) {
               </div>
               {/* Middle */}
               <div className="flex-1 flex flex-col gap-0.5">
-                <span className="text-[#9CA3AF] text-[11px]">{order.date}</span>
+                <span className="text-[#9CA3AF] text-[11px]">{order.orderDate}</span>
                 <span className="text-[#111827] text-sm font-semibold">{order.title}</span>
                 <span className="text-[#6B7280] text-xs">{order.author}</span>
               </div>
               {/* Right */}
               <div className="flex flex-col items-end gap-2">
-                <span className="text-[#111827] text-[15px] font-bold">{order.price}</span>
-                <span className="bg-[#DCFCE7] text-[#15803D] text-[11px] font-semibold rounded-full px-2.5 py-1">
-                  배송완료
+                <span className="text-[#111827] text-[15px] font-bold">
+                  {formatAmount(order.amount)}
+                </span>
+                <span className={statusBadgeClass(order.status)}>
+                  {order.status || '-'}
                 </span>
               </div>
             </div>
@@ -255,6 +256,27 @@ function MainContent({ profile, recentOrders, points }) {
       </div>
     </div>
   )
+}
+
+function formatAmount(amount) {
+  if (amount === null || amount === undefined || amount === '') return '-'
+  const n = Number(amount)
+  if (Number.isNaN(n)) return String(amount)
+  return `${n.toLocaleString()}원`
+}
+
+function statusBadgeClass(status) {
+  const base = 'text-[11px] font-semibold rounded-full px-2.5 py-1'
+  switch (status) {
+    case '배송완료':
+      return `${base} bg-[#DCFCE7] text-[#15803D]`
+    case '배송중':
+      return `${base} bg-[#DBEAFE] text-[#1D4ED8]`
+    case '주문취소':
+      return `${base} bg-[#FEE2E2] text-[#B91C1C]`
+    default:
+      return `${base} bg-[#F3F4F6] text-[#374151]`
+  }
 }
 
 function ProfileRow2Col({ label1, value1, label2, value2 }) {
