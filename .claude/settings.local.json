@@ -13,7 +13,11 @@
       "Bash(npx eslint *)",
       "Bash(Select-String -Pattern '\"lint\"')",
       "Bash(node *)",
-      "Bash(npx playwright *)"
+      "Bash(npx playwright *)",
+      "Bash(tasklist)",
+      "Bash(taskkill /F /PID 12520 /PID 14804)",
+      "PowerShell(npm install *)",
+      "PowerShell(npm run *)"
     ]
   }
 }

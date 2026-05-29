@@ -13,8 +13,8 @@ export const requestPortOnePayment = async ({
     paymentId: orderId,
     orderName,
     totalAmount,
-    currency: 'CURRENCY_KRW',
     payMethod,
+    currency: 'CURRENCY_KRW',
     customer: {
       fullName: customer.fullName,
       phoneNumber: customer.phoneNumber,

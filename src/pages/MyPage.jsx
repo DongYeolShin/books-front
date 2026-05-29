@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { User, Package, ShoppingCart, BookOpen, LogOut, Coins } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Coins } from 'lucide-react'
 import styles from './MyPage.module.css'
 import useAuthStore from '../stores/authStore'
 import { fetchMyPageProfile } from '../services/myPageService'
+import MyPageSidebar from '../components/MyPageSidebar'
 
 function MyPage() {
-  const navigate = useNavigate()
-  const name = useAuthStore((state) => state.name)
-  const clearAuth = useAuthStore((state) => state.clearAuth)
   const points = useAuthStore((state) => state.points)
 
   const [myInfo, setMyInfo] = useState(null)
@@ -39,13 +37,6 @@ function MyPage() {
     }
   }, [])
 
-  const handleLogout = () => {
-    clearAuth()
-    navigate('/')
-  }
-
-  const avatarInitial = name ? name.charAt(0) : '?'
-
   if (loading) {
     return (
       <div className="-mx-6 -my-8 min-h-[calc(100vh-64px)] flex bg-[#F3F4F6] items-center justify-center text-gray-500">
@@ -64,80 +55,9 @@ function MyPage() {
 
   return (
     <div className="-mx-6 -my-8 min-h-[calc(100vh-64px)] flex bg-[#F3F4F6]">
-      <Sidebar
-        avatarInitial={avatarInitial}
-        name={name}
-        onLogout={handleLogout}
-      />
+      <MyPageSidebar activeKey="profile" />
       <MainContent myInfo={myInfo} recentOrders={recentOrders} points={points} />
     </div>
-  )
-}
-
-function Sidebar({ avatarInitial, name, onLogout }) {
-  return (
-    <aside className="w-[260px] flex-shrink-0 bg-white flex flex-col">
-      {/* Profile section */}
-      <div className="flex flex-col items-center gap-[10px] pt-7 pr-5 pb-6 pl-5 border-b border-[#E8ECEF]">
-        <div className="w-[68px] h-[68px] rounded-full bg-[#2563EB] flex items-center justify-center text-white text-[26px] font-bold">
-          {avatarInitial}
-        </div>
-        <span className="text-[#111827] text-base font-bold">{name || '사용자'}</span>
-        <span className="bg-[#EFF6FF] text-[#2563EB] text-[11px] font-medium rounded-full px-3 py-1">
-          일반회원
-        </span>
-      </div>
-
-      {/* Nav section */}
-      <nav className="flex flex-col gap-1 py-4 px-[10px] flex-1">
-        {/* 내 정보 — active */}
-        <div className="h-12 rounded-lg bg-[#EFF6FF] border-l-[3px] border-l-[#2563EB] pl-[13px] pr-4 flex items-center gap-3">
-          <User size={18} color="#2563EB" />
-          <span className="text-sm text-[#2563EB] font-semibold">내 정보</span>
-        </div>
-
-        {/* 주문/배송목록 — non-navigating */}
-        <button
-          type="button"
-          onClick={(e) => e.preventDefault()}
-          className="h-12 rounded-lg px-4 flex items-center gap-3 hover:bg-gray-50 transition-colors"
-        >
-          <Package size={18} color="#6B7280" />
-          <span className="text-sm text-[#4B5563]">주문/배송목록</span>
-        </button>
-
-        {/* 장바구니 — Link */}
-        <Link
-          to="/cart"
-          className="h-12 rounded-lg px-4 flex items-center gap-3 hover:bg-gray-50 transition-colors"
-        >
-          <ShoppingCart size={18} color="#6B7280" />
-          <span className="text-sm text-[#4B5563]">장바구니</span>
-        </Link>
-
-        {/* 구매목록 — non-navigating */}
-        <button
-          type="button"
-          onClick={(e) => e.preventDefault()}
-          className="h-12 rounded-lg px-4 flex items-center gap-3 hover:bg-gray-50 transition-colors"
-        >
-          <BookOpen size={18} color="#6B7280" />
-          <span className="text-sm text-[#4B5563]">구매목록</span>
-        </button>
-      </nav>
-
-      {/* Logout section */}
-      <div className="py-[18px] px-6 border-t border-[#E8ECEF]">
-        <button
-          type="button"
-          onClick={onLogout}
-          className="flex items-center gap-2 hover:opacity-75 transition-opacity"
-        >
-          <LogOut size={18} color="#9CA3AF" />
-          <span className="text-sm text-[#9CA3AF]">로그아웃</span>
-        </button>
-      </div>
-    </aside>
   )
 }
 
@@ -215,13 +135,12 @@ function MainContent({ myInfo, recentOrders, points }) {
         {/* Card header */}
         <div className="px-6 py-5 flex justify-between items-center">
           <span className="text-[#111827] text-[15px] font-bold">최근 주문 내역</span>
-          <a
-            href="#"
-            onClick={(e) => e.preventDefault()}
+          <Link
+            to="/mypage/orders"
             className="text-[#2563EB] text-[13px] font-medium"
           >
             전체 주문 보기 →
-          </a>
+          </Link>
         </div>
         <div className="h-px bg-[#E5E7EB]" />
 

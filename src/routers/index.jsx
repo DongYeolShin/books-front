@@ -11,6 +11,7 @@ import PaymentSuccessPage from '../pages/PaymentSuccessPage'
 import PaymentFailPage from '../pages/PaymentFailPage'
 import OrderCompletePage from '../pages/OrderCompletePage'
 import MyPage from '../pages/MyPage'
+import OrderListPage from '../pages/OrderListPage'
 import RequireAuth from './RequireAuth'
 
 const router = createBrowserRouter([
@@ -64,6 +65,14 @@ const router = createBrowserRouter([
         element: (
           <RequireAuth>
             <MyPage />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: 'mypage/orders',
+        element: (
+          <RequireAuth>
+            <OrderListPage />
           </RequireAuth>
         ),
       },

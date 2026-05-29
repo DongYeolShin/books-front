@@ -1,0 +1,89 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "orderId": "ord_20260529_a1b2c3d4",
+      "orderDate": "2026-05-29",
+      "orderName": "미드나잇 라이브러리 외 2건",
+      "totalAmount": 45000,
+      "status": "결제 완료",
+      "imageUrl": ""
+    },
+    {
+      "orderId": "ord_20260520_e5f6g7h8",
+      "orderDate": "2026-05-20",
+      "orderName": "아몬드",
+      "totalAmount": 12600,
+      "status": "배송중",
+      "imageUrl": ""
+    },
+    {
+      "orderId": "ord_20260512_i9j0k1l2",
+      "orderDate": "2026-05-12",
+      "orderName": "채식주의자",
+      "totalAmount": 10800,
+      "status": "배송완료",
+      "imageUrl": ""
+    },
+    {
+      "orderId": "ord_20260505_m3n4o5p6",
+      "orderDate": "2026-05-05",
+      "orderName": "스타트업 트렌드 2026",
+      "totalAmount": 34200,
+      "status": "배송완료",
+      "imageUrl": ""
+    },
+    {
+      "orderId": "ord_20260428_q7r8s9t0",
+      "orderDate": "2026-04-28",
+      "orderName": "Go 언어로 만드는 웹",
+      "totalAmount": 32400,
+      "status": "배송완료",
+      "imageUrl": ""
+    },
+    {
+      "orderId": "ord_20260420_u1v2w3x4",
+      "orderDate": "2026-04-20",
+      "orderName": "클린 아키텍처",
+      "totalAmount": 28800,
+      "status": "배송완료",
+      "imageUrl": ""
+    },
+    {
+      "orderId": "ord_20260411_y5z6a7b8",
+      "orderDate": "2026-04-11",
+      "orderName": "리팩터링 2판",
+      "totalAmount": 42000,
+      "status": "배송완료",
+      "imageUrl": ""
+    },
+    {
+      "orderId": "ord_20260403_c9d0e1f2",
+      "orderDate": "2026-04-03",
+      "orderName": "이펙티브 자바 외 1건",
+      "totalAmount": 51000,
+      "status": "배송완료",
+      "imageUrl": ""
+    },
+    {
+      "orderId": "ord_20260325_g3h4i5j6",
+      "orderDate": "2026-03-25",
+      "orderName": "디자인 패턴의 아름다움",
+      "totalAmount": 24300,
+      "status": "배송완료",
+      "imageUrl": ""
+    },
+    {
+      "orderId": "ord_20260317_k7l8m9n0",
+      "orderDate": "2026-03-17",
+      "orderName": "코틀린 인 액션",
+      "totalAmount": 36000,
+      "status": "배송완료",
+      "imageUrl": ""
+    }
+  ],
+  "pageInfo": {
+    "nowPageNum": 1,
+    "totalRows": 23
+  }
+}
