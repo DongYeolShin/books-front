@@ -17,7 +17,8 @@
       "Bash(tasklist)",
       "Bash(taskkill /F /PID 12520 /PID 14804)",
       "PowerShell(npm install *)",
-      "PowerShell(npm run *)"
+      "PowerShell(npm run *)",
+      "Bash(Get-Content *)"
     ]
   }
 }

@@ -13,3 +13,15 @@ export const login = async ({ userId, passwd }) => {
   })
   return data
 }
+
+export const signup = async (payload) => {
+  const { data } = await axiosInstance.post(ENDPOINTS.USER_SIGNUP, payload)
+  return data
+}
+
+export const checkUserId = async (userId) => {
+  const { data } = await axiosInstance.get(ENDPOINTS.USER_CHECK_ID, {
+    params: { userId },
+  })
+  return data
+}

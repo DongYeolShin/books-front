@@ -12,6 +12,7 @@ import PaymentFailPage from '../pages/PaymentFailPage'
 import OrderCompletePage from '../pages/OrderCompletePage'
 import MyPage from '../pages/MyPage'
 import OrderListPage from '../pages/OrderListPage'
+import SignupPage from '../pages/SignupPage'
 import RequireAuth from './RequireAuth'
 
 const router = createBrowserRouter([
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <MainPage /> },
+      { path: 'signup', element: <SignupPage /> },
       { path: 'books', element: <Navigate to="/books/bestseller" replace /> },
       { path: 'books/:category', element: <BookListPage /> },
       { path: 'book/:bookId', element: <BookDetailPage /> },
